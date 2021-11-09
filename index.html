@@ -1,5 +1,4 @@
-
-<!doctype html>
+<!Doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -143,6 +142,22 @@
         display: none;
     }
 
+    #backToTop{
+        z-index: 1500;
+        width: 50px;
+        height: 50px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background-color: #40407a;
+        border-radius: 50%;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
     </style>
 
     
@@ -150,7 +165,7 @@
     <link href="carousel.css" rel="stylesheet">
   </head>
   <body>
-    
+    <div id="backToTop">Top</div>
     <div id="preloader">
         <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     </div>
@@ -330,7 +345,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        const backToTop = document.getElementById("backToTop");
         
+
+        /*---when the DOM content was loaded
+        the preloader display will be none and content display will be---*/
         document.addEventListener("DOMContentLoaded" , function(){
             let preloader = document.querySelector("#preloader");
             let content = document.querySelector("#content");
@@ -338,7 +357,42 @@
             preloader.style.display = "none";
             content.style.display = "block"
         });
+
+
+        window.addEventListener("scroll" , function(e){
+
+            /*-----if document Element scrollTop did higher in 250 so button backToTop show,
+             else not  button backToTop is hidden----*/
+            if(document.documentElement.scrollTop > 250){
+                backToTop.style.display = "flex";
+            }else{
+                backToTop.style.display = "none";
+            };
+        });
+
+        backToTop.addEventListener("click" , function(){
+            scrollTop( 0 , 1500)
+        });
+
+        function scrollTop( scroll , duretion ){
+            let doc = document.documentElement;
+            let currentTime = duretion;
+            let speed = 50;
+
+            let animat = ()=>{
+                if(currentTime <= 0)return;
+
+                setTimeout(()=>{
+                    doc.scrollTop -= (doc.scrollTop/(currentTime/speed));
+                    currentTime -= speed;
+                    console.log(currentTime , doc.scrollTop)
+                    animat();
+                },speed)
+            };
+            animat();
+        }
         
+
     </script>
   </body>
 </html>
